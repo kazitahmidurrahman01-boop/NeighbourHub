@@ -27,7 +27,7 @@ namespace NeighbourHub.Forms
         private void InitializeComponent()
         {
             this.Text = "NeighbourHub - Login";
-            this.Size = new Size(820, 520);
+            this.Size = new Size(820, 640);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -169,12 +169,12 @@ namespace NeighbourHub.Forms
             });
             cmbRole.SelectedIndex = 0;
 
-            // Buttons
+            // Buttons Row 1 — Login & Clear
             btnLogin = new Button
             {
-                Text = "Login",
+                Text = "🔓 Login",
                 Location = new Point(45, 330),
-                Size = new Size(120, 38)
+                Size = new Size(130, 38)
             };
             UIHelper.StyleButton(btnLogin, ThemeColors.Primary, Color.White);
             btnLogin.Click += BtnLogin_Click;
@@ -182,7 +182,7 @@ namespace NeighbourHub.Forms
             btnClear = new Button
             {
                 Text = "Clear",
-                Location = new Point(175, 330),
+                Location = new Point(185, 330),
                 Size = new Size(100, 38)
             };
             UIHelper.StyleButton(btnClear, ThemeColors.Secondary, Color.White);
@@ -191,33 +191,64 @@ namespace NeighbourHub.Forms
             btnExit = new Button
             {
                 Text = "Exit",
-                Location = new Point(285, 330),
+                Location = new Point(295, 330),
                 Size = new Size(90, 38)
             };
             UIHelper.StyleButton(btnExit, ThemeColors.Danger, Color.White);
             btnExit.Click += (s, e) => Application.Exit();
 
-            // Quick Demo Buttons / Viva helper
+            // Register Button
+            var dividerLine = new Label
+            {
+                Text = "─────────────────────────────────────",
+                ForeColor = Color.FromArgb(200, 200, 200),
+                Location = new Point(40, 385),
+                AutoSize = true,
+                Font = new Font("Segoe UI", 8F)
+            };
+
+            var lblNewUser = new Label
+            {
+                Text = "New user? Create a free account:",
+                Font = UIHelper.BodyFont,
+                ForeColor = ThemeColors.TextSecondary,
+                Location = new Point(45, 408),
+                AutoSize = true
+            };
+
+            var btnRegister = new Button
+            {
+                Text = "📝 Register New Account",
+                Location = new Point(45, 432),
+                Size = new Size(200, 38)
+            };
+            UIHelper.StyleButton(btnRegister, ThemeColors.Success, Color.White);
+            btnRegister.Click += (s, e) =>
+            {
+                var regForm = new RegistrationForm();
+                regForm.ShowDialog();
+            };
+
             var lblQuick = new Label
             {
                 Text = "Quick Demo Logins (Click to prefill):",
                 Font = UIHelper.SmallFont,
                 ForeColor = ThemeColors.TextSecondary,
-                Location = new Point(45, 385),
+                Location = new Point(45, 490),
                 AutoSize = true
             };
 
-            var btnQuickAdmin = CreateQuickBtn("Admin", "admin", "admin123", 0, new Point(45, 410));
-            var btnQuickOwner = CreateQuickBtn("Owner", "owner1", "owner123", 1, new Point(125, 410));
-            var btnQuickManager = CreateQuickBtn("Manager", "manager1", "manager123", 2, new Point(205, 410));
-            var btnQuickResident = CreateQuickBtn("Resident", "tanisha", "tenant123", 3, new Point(295, 410));
+            var btnQuickAdmin = CreateQuickBtn("Admin", "admin", "admin123", 0, new Point(45, 512));
+            var btnQuickOwner = CreateQuickBtn("Owner", "owner1", "owner123", 1, new Point(125, 512));
+            var btnQuickManager = CreateQuickBtn("Manager", "manager1", "manager123", 2, new Point(205, 512));
+            var btnQuickResident = CreateQuickBtn("Resident", "tanisha", "tenant123", 3, new Point(295, 512));
 
             lblStatus = new Label
             {
                 Text = "",
                 ForeColor = ThemeColors.Danger,
                 Font = UIHelper.SmallFont,
-                Location = new Point(45, 450),
+                Location = new Point(45, 548),
                 AutoSize = true
             };
 
@@ -232,6 +263,9 @@ namespace NeighbourHub.Forms
             rightPanel.Controls.Add(btnLogin);
             rightPanel.Controls.Add(btnClear);
             rightPanel.Controls.Add(btnExit);
+            rightPanel.Controls.Add(dividerLine);
+            rightPanel.Controls.Add(lblNewUser);
+            rightPanel.Controls.Add(btnRegister);
             rightPanel.Controls.Add(lblQuick);
             rightPanel.Controls.Add(btnQuickAdmin);
             rightPanel.Controls.Add(btnQuickOwner);
