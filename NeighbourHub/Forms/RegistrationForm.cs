@@ -13,8 +13,6 @@ namespace NeighbourHub.Forms
         private TextBox txtUsername = null!;
         private TextBox txtPassword = null!;
         private TextBox txtConfirmPassword = null!;
-        private TextBox txtEmail = null!;
-        private TextBox txtPhone = null!;
         private ComboBox cmbRole = null!;
         private Label lblStatus = null!;
 
@@ -25,118 +23,154 @@ namespace NeighbourHub.Forms
 
         private void InitializeComponent()
         {
-            this.Text = "NeighbourHub - New Account Registration";
-            this.Size = new Size(540, 640);
+            this.Text = "NeighbourHub - Register";
+            this.Size = new Size(420, 480);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.BackColor = Color.White;
             this.Font = UIHelper.BodyFont;
 
-            // Header strip
-            var headerPanel = new Panel
-            {
-                Dock = DockStyle.Top,
-                Height = 80,
-                BackColor = ThemeColors.SidebarDark
-            };
+            int left = 35;
+            int fieldW = 330;
+
+            // Title
             var lblTitle = new Label
             {
-                Text = "🏢 NeighbourHub — Create Account",
+                Text = "🏢 Create New Account",
                 Font = new Font("Segoe UI", 14F, FontStyle.Bold),
-                ForeColor = Color.White,
-                Location = new Point(24, 14),
+                ForeColor = ThemeColors.TextPrimary,
+                Location = new Point(left, 20),
                 AutoSize = true
             };
-            var lblSub = new Label
+
+            // Full Name
+            var lblName = new Label
             {
-                Text = "Fill in your details to register a new account.",
-                Font = UIHelper.SmallFont,
-                ForeColor = ThemeColors.PrimaryLight,
-                Location = new Point(26, 48),
+                Text = "Full Name",
+                Font = UIHelper.BodyBoldFont,
+                ForeColor = ThemeColors.TextPrimary,
+                Location = new Point(left, 65),
                 AutoSize = true
             };
-            headerPanel.Controls.Add(lblSub);
-            headerPanel.Controls.Add(lblTitle);
+            txtFullName = new TextBox
+            {
+                Location = new Point(left, 85),
+                Size = new Size(fieldW, 32),
+                Font = new Font("Segoe UI", 11F),
+                PlaceholderText = "Your full name"
+            };
 
-            // Form fields
-            int left = 40;
-            int fieldWidth = 440;
+            // Username
+            var lblUN = new Label
+            {
+                Text = "Username",
+                Font = UIHelper.BodyBoldFont,
+                ForeColor = ThemeColors.TextPrimary,
+                Location = new Point(left, 130),
+                AutoSize = true
+            };
+            txtUsername = new TextBox
+            {
+                Location = new Point(left, 150),
+                Size = new Size(fieldW, 32),
+                Font = new Font("Segoe UI", 11F),
+                PlaceholderText = "Choose a username"
+            };
 
-            var lblFN = MakeLabel("Full Name:", left, 105);
-            txtFullName = MakeTextBox(left, 128, fieldWidth);
+            // Password
+            var lblPW = new Label
+            {
+                Text = "Password",
+                Font = UIHelper.BodyBoldFont,
+                ForeColor = ThemeColors.TextPrimary,
+                Location = new Point(left, 195),
+                AutoSize = true
+            };
+            txtPassword = new TextBox
+            {
+                Location = new Point(left, 215),
+                Size = new Size(fieldW, 32),
+                Font = new Font("Segoe UI", 11F),
+                PasswordChar = '●',
+                PlaceholderText = "Min 6 characters"
+            };
 
-            var lblUN = MakeLabel("Username:", left, 168);
-            txtUsername = MakeTextBox(left, 191, fieldWidth);
+            // Confirm Password
+            var lblCPW = new Label
+            {
+                Text = "Confirm Password",
+                Font = UIHelper.BodyBoldFont,
+                ForeColor = ThemeColors.TextPrimary,
+                Location = new Point(left, 260),
+                AutoSize = true
+            };
+            txtConfirmPassword = new TextBox
+            {
+                Location = new Point(left, 280),
+                Size = new Size(fieldW, 32),
+                Font = new Font("Segoe UI", 11F),
+                PasswordChar = '●',
+                PlaceholderText = "Re-enter password"
+            };
 
-            var lblPW = MakeLabel("Password:", left, 231);
-            txtPassword = MakeTextBox(left, 254, fieldWidth, isPassword: true);
-
-            var lblCPW = MakeLabel("Confirm Password:", left, 294);
-            txtConfirmPassword = MakeTextBox(left, 317, fieldWidth, isPassword: true);
-
-            var lblEM = MakeLabel("Email Address:", left, 357);
-            txtEmail = MakeTextBox(left, 380, fieldWidth);
-
-            var lblPH = MakeLabel("Phone Number:", left, 420);
-            txtPhone = MakeTextBox(left, 443, fieldWidth);
-
-            var lblRole = MakeLabel("Register as (Role):", left, 483);
+            // Role
+            var lblRole = new Label
+            {
+                Text = "Role",
+                Font = UIHelper.BodyBoldFont,
+                ForeColor = ThemeColors.TextPrimary,
+                Location = new Point(left, 325),
+                AutoSize = true
+            };
             cmbRole = new ComboBox
             {
-                Location = new Point(left, 506),
-                Size = new Size(fieldWidth, 32),
+                Location = new Point(left, 345),
+                Size = new Size(fieldW, 32),
                 DropDownStyle = ComboBoxStyle.DropDownList,
                 Font = new Font("Segoe UI", 10.5F)
             };
             cmbRole.Items.AddRange(new object[]
             {
-                "Resident",
+                "Admin",
+                "Property Owner",
                 "Building Manager",
-                "Property Owner"
+                "Resident"
             });
-            cmbRole.SelectedIndex = 0;
+            cmbRole.SelectedIndex = 3; // Default: Resident
 
-            // Note about Admin
-            var lblNote = new Label
-            {
-                Text = "ℹ️ Admin accounts are created only by the System Administrator.",
-                Font = UIHelper.SmallFont,
-                ForeColor = ThemeColors.TextMuted,
-                Location = new Point(left, 540),
-                Size = new Size(fieldWidth, 20)
-            };
-
-            // Buttons
-            var btnRegister = new Button
-            {
-                Text = "✅ Create Account",
-                Location = new Point(left, 572),
-                Size = new Size(165, 38)
-            };
-            UIHelper.StyleButton(btnRegister, ThemeColors.Success, Color.White);
-            btnRegister.Click += BtnRegister_Click;
-
-            var btnCancel = new Button
-            {
-                Text = "✖ Cancel",
-                Location = new Point(220, 572),
-                Size = new Size(110, 38)
-            };
-            UIHelper.StyleButton(btnCancel, ThemeColors.Danger, Color.White);
-            btnCancel.Click += (s, e) => this.Close();
-
+            // Status label
             lblStatus = new Label
             {
                 Text = "",
                 ForeColor = ThemeColors.Danger,
                 Font = UIHelper.SmallFont,
-                Location = new Point(left, 618),
-                Size = new Size(fieldWidth, 20)
+                Location = new Point(left, 390),
+                Size = new Size(fieldW, 18),
+                AutoSize = false
             };
 
-            this.Controls.Add(headerPanel);
-            this.Controls.Add(lblFN);
+            // Buttons
+            var btnCreate = new Button
+            {
+                Text = "✅ Register",
+                Location = new Point(left, 412),
+                Size = new Size(155, 38)
+            };
+            UIHelper.StyleButton(btnCreate, ThemeColors.Success, Color.White);
+            btnCreate.Click += BtnCreate_Click;
+
+            var btnCancel = new Button
+            {
+                Text = "✖ Cancel",
+                Location = new Point(210, 412),
+                Size = new Size(110, 38)
+            };
+            UIHelper.StyleButton(btnCancel, ThemeColors.Danger, Color.White);
+            btnCancel.Click += (s, e) => this.Close();
+
+            this.Controls.Add(lblTitle);
+            this.Controls.Add(lblName);
             this.Controls.Add(txtFullName);
             this.Controls.Add(lblUN);
             this.Controls.Add(txtUsername);
@@ -144,128 +178,103 @@ namespace NeighbourHub.Forms
             this.Controls.Add(txtPassword);
             this.Controls.Add(lblCPW);
             this.Controls.Add(txtConfirmPassword);
-            this.Controls.Add(lblEM);
-            this.Controls.Add(txtEmail);
-            this.Controls.Add(lblPH);
-            this.Controls.Add(txtPhone);
             this.Controls.Add(lblRole);
             this.Controls.Add(cmbRole);
-            this.Controls.Add(lblNote);
-            this.Controls.Add(btnRegister);
-            this.Controls.Add(btnCancel);
             this.Controls.Add(lblStatus);
+            this.Controls.Add(btnCreate);
+            this.Controls.Add(btnCancel);
+
+            this.AcceptButton = btnCreate;
         }
 
-        private Label MakeLabel(string text, int x, int y)
+        private void BtnCreate_Click(object? sender, EventArgs e)
         {
-            return new Label
-            {
-                Text = text,
-                Font = UIHelper.BodyBoldFont,
-                ForeColor = ThemeColors.TextPrimary,
-                Location = new Point(x, y),
-                AutoSize = true
-            };
-        }
-
-        private TextBox MakeTextBox(int x, int y, int width, bool isPassword = false)
-        {
-            return new TextBox
-            {
-                Location = new Point(x, y),
-                Size = new Size(width, 32),
-                Font = new Font("Segoe UI", 11F),
-                PasswordChar = isPassword ? '●' : '\0'
-            };
-        }
-
-        private void BtnRegister_Click(object? sender, EventArgs e)
-        {
-            lblStatus.Text = "";
             lblStatus.ForeColor = ThemeColors.Danger;
 
             string fullName = txtFullName.Text.Trim();
             string username = txtUsername.Text.Trim();
-            string password = txtPassword.Text.Trim();
-            string confirmPassword = txtConfirmPassword.Text.Trim();
-            string email = txtEmail.Text.Trim();
-            string phone = txtPhone.Text.Trim();
+            string password = txtPassword.Text;
+            string confirmPassword = txtConfirmPassword.Text;
             string role = cmbRole.SelectedItem?.ToString() ?? "Resident";
 
-            // Validation
-            if (string.IsNullOrEmpty(fullName) || string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            // --- Validation ---
+            if (string.IsNullOrEmpty(fullName))
             {
-                lblStatus.Text = "Full Name, Username and Password are required.";
+                lblStatus.Text = "❌ Full name is required.";
+                txtFullName.Focus();
+                return;
+            }
+
+            if (string.IsNullOrEmpty(username))
+            {
+                lblStatus.Text = "❌ Username is required.";
+                txtUsername.Focus();
                 return;
             }
 
             if (username.Length < 4)
             {
-                lblStatus.Text = "Username must be at least 4 characters long.";
+                lblStatus.Text = "❌ Username must be at least 4 characters.";
+                txtUsername.Focus();
+                return;
+            }
+
+            if (string.IsNullOrEmpty(password))
+            {
+                lblStatus.Text = "❌ Password is required.";
+                txtPassword.Focus();
                 return;
             }
 
             if (password.Length < 6)
             {
-                lblStatus.Text = "Password must be at least 6 characters long.";
+                lblStatus.Text = "❌ Password must be at least 6 characters.";
+                txtPassword.Focus();
                 return;
             }
 
             if (password != confirmPassword)
             {
-                lblStatus.Text = "Passwords do not match. Please re-enter.";
+                lblStatus.Text = "❌ Passwords do not match.";
                 txtConfirmPassword.Clear();
                 txtConfirmPassword.Focus();
                 return;
             }
 
-            if (!string.IsNullOrEmpty(email) && !email.Contains("@"))
-            {
-                lblStatus.Text = "Please enter a valid email address.";
-                return;
-            }
-
             try
             {
-                // Check if username already exists
+                // Check duplicate username
                 object? existing = DbHelper.ExecuteScalar(
                     "SELECT COUNT(*) FROM dbo.Users WHERE Username = @u",
                     new[] { new SqlParameter("@u", username) });
 
                 if (Convert.ToInt32(existing) > 0)
                 {
-                    lblStatus.Text = "This username is already taken. Please choose another.";
+                    lblStatus.Text = "❌ Username already taken. Try another.";
                     txtUsername.Focus();
                     return;
                 }
 
-                // Insert new user (Status = Pending for non-Admin roles, awaiting admin approval)
-                string insertQuery = @"
+                // Insert new user
+                int inserted = DbHelper.ExecuteNonQuery(@"
                     INSERT INTO dbo.Users (Username, Password, FullName, Email, Phone, Role, Status, CreatedAt)
-                    VALUES (@u, @p, @fn, @em, @ph, @r, @s, GETDATE())";
-
-                int inserted = DbHelper.ExecuteNonQuery(insertQuery, new[]
-                {
-                    new SqlParameter("@u", username),
-                    new SqlParameter("@p", password),
-                    new SqlParameter("@fn", fullName),
-                    new SqlParameter("@em", string.IsNullOrEmpty(email) ? (object)DBNull.Value : email),
-                    new SqlParameter("@ph", string.IsNullOrEmpty(phone) ? (object)DBNull.Value : phone),
-                    new SqlParameter("@r", role),
-                    new SqlParameter("@s", "Active")
-                });
+                    VALUES (@u, @p, @fn, NULL, NULL, @r, 'Active', GETDATE())",
+                    new[]
+                    {
+                        new SqlParameter("@u", username),
+                        new SqlParameter("@p", password),
+                        new SqlParameter("@fn", fullName),
+                        new SqlParameter("@r", role)
+                    });
 
                 if (inserted == 1)
                 {
-                    lblStatus.ForeColor = ThemeColors.Success;
-                    lblStatus.Text = "✅ Account created successfully!";
-
                     MessageBox.Show(
-                        $"🎉 Welcome to NeighbourHub, {fullName}!\n\n" +
-                        $"Your account has been created successfully.\n\n" +
+                        $"✅ Account created successfully!\n\n" +
+                        $"Name     : {fullName}\n" +
                         $"Username : {username}\n" +
-                        $"Role      : {role}\n\n" +
-                        $"You can now log in with your credentials.",
+                        $"Role     : {role}\n\n" +
+                        $"You can now log in.",
                         "Registration Successful",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
@@ -275,7 +284,7 @@ namespace NeighbourHub.Forms
             }
             catch (Exception ex)
             {
-                UIHelper.ShowError($"Registration failed. Please try again.\nDetails: {ex.Message}");
+                lblStatus.Text = "❌ Error: " + ex.Message;
             }
         }
     }
